@@ -1,0 +1,35 @@
+stages:
+  - build
+  - test
+  - deploy
+
+variables:
+  # Variables de base
+  DATABASE_URL: "jdbc:postgresql://localhost:5432/ma_base"
+  DATABASE_USER: "postgres"
+  DATABASE_PASSWORD: "password"
+  SPRING_PROFILES_ACTIVE: "prod"
+
+# Étape de Build
+build:
+  stage: build
+  script:
+    - ./mvnw clean package -DskipTests=true
+  artifacts:
+    paths:
+      - target/*.jar
+
+# Étape de Tests
+test:
+  stage: test
+  script:
+    - ./mvnw test
+
+# Étape de Déploiement
+deploy:
+  stage: deploy
+  script:
+    - echo "Déploiement en production"
+    - scp target/*.jar user@server:/path/to/deploy
+  only:
+    - master
