@@ -14,7 +14,7 @@ public class PageController {
         return ResponseEntity.ok("Bienvenue sur le dashboard admin !");
     }
 
-    // @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     @GetMapping("/user/profile")
     public ResponseEntity<String> userProfile() {
         return ResponseEntity.ok("Bienvenue sur votre profil !");
