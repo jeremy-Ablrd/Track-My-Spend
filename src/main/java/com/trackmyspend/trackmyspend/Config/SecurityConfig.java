@@ -36,6 +36,7 @@ public class SecurityConfig {
                 .requestMatchers("/login", "/user/create").permitAll() // Public
                 .requestMatchers("/admin/**").hasRole("ADMIN") // Routes accessibles uniquement aux ADMIN
                 .requestMatchers("/user/**").hasAnyRole("USER", "ADMIN") // Accessible aux USER et ADMIN
+                .requestMatchers("/api-docs/**", "/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
                 .anyRequest().authenticated() // Tout le reste est protégé
             )
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // Pas de session
