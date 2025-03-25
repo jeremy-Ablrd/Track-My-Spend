@@ -7,6 +7,8 @@ import com.trackmyspend.trackmyspend.Entity.AppUser;
 import com.trackmyspend.trackmyspend.Service.UserService;
 import com.trackmyspend.trackmyspend.dto.UserDTO;
 
+import lombok.NoArgsConstructor;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController
 @RequestMapping("/user")
+@NoArgsConstructor
 public class UserController {
 
     @Autowired
