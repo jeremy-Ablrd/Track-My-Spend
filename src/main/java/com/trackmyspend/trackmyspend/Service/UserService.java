@@ -11,12 +11,10 @@ import com.trackmyspend.trackmyspend.Entity.AppUser;
 import com.trackmyspend.trackmyspend.Entity.Role;
 import com.trackmyspend.trackmyspend.Repository.UserRepository;
 
-import lombok.RequiredArgsConstructor;
-
 @Service
-@RequiredArgsConstructor
 public class UserService {
 
+    @Autowired
     private PasswordEncoder passwordEncoder;
 
     @Autowired

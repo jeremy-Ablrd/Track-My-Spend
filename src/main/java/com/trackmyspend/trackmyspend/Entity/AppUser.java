@@ -39,7 +39,7 @@ public class AppUser {
     @Column(unique = true)
     private String email;
 
-    @JsonIgnore //probleme lors de la création d'un compte...
+    // @JsonIgnore //probleme lors de la création d'un compte...
     private String password;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
