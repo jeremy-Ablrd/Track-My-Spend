@@ -12,46 +12,37 @@ on:
 
 jobs:
   test:
-    name: Run Tests with PostgreSQL
+    name: Run Tests with Docker Compose
     runs-on: ubuntu-latest
-    services:
-      postgres:
-        image: postgres:16.8-bullseye
-
-        ports:
-          - 5432:5432
-        env:
-          POSTGRES_USER: jerem
-          POSTGRES_PASSWORD: admin
-          POSTGRES_DB: trackmyspend
-        options: >-
-          --health-cmd="pg_isready -U jerem" 
-          --health-interval=10s 
-          --health-timeout=5s 
-          --health-retries=5
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
 
+      - name: Start services with Docker Compose
+        run: docker-compose up -d db
+
       - name: Wait for PostgreSQL to be ready
         run: |
-          echo "Waiting for PostgreSQL to be ready..."
+          echo "Waiting for PostgreSQL to start..."
           sleep 10
-          until pg_isready -h postgres -p 5432 -U jerem; do
+          until docker logs postgres-db 2>&1 | grep "database system is ready to accept connections"; do
             echo "Still waiting..."
-            sleep 2
+            sleep 3
           done
           echo "PostgreSQL is ready!"
 
       - name: Set up environment variables
         run: |
-          echo "SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/trackmyspend" >> $GITHUB_ENV
+          echo "SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/trackmyspend" >> $GITHUB_ENV
           echo "SPRING_DATASOURCE_USERNAME=jerem" >> $GITHUB_ENV
           echo "SPRING_DATASOURCE_PASSWORD=admin" >> $GITHUB_ENV
 
       - name: Run tests
         run: mvn clean test -Dspring.profiles.active=test
+
+      - name: Stop Docker Compose services
+        run: docker-compose down
 
   build:
     name: Build Application
@@ -88,7 +79,7 @@ jobs:
 
       - name: Package Application
         run: mvn clean package
-
+        
   # deploy:
   #   name: Deploy Application
   #   runs-on: ubuntu-latest
