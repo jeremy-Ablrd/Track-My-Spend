@@ -84,9 +84,7 @@ jobs:
 
       - name: Configurer Docker
         run: |
-          sudo apt-get update
           sudo apt-get install -y docker.io
-          sudo systemctl start docker
 
       - name: Se connecter à Docker Hub
         uses: docker/login-action@v2
