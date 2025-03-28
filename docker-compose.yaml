@@ -1,7 +1,7 @@
 version: '3.8'
 
 services:
-  db:
+  postgres:
     image: postgres:16.8-alpine3.20
     container_name: postgres-db
     restart: always
@@ -21,10 +21,10 @@ services:
     depends_on:
       - db
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/trackmyspend
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/trackmyspend
       SPRING_DATASOURCE_USERNAME: jerem
       SPRING_DATASOURCE_PASSWORD: admin
-      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      SPRING_JPA_HIBERNATE_DDL_AUTO: create-update
     ports:
       - "8080:8080"
 

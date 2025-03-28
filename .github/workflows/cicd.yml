@@ -13,22 +13,26 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
-    services:
-      postgres:
-        image: postgres:16  # Version PostgreSQL
-        env:
-          POSTGRES_USER: jerem
-          POSTGRES_PASSWORD: admin
-          POSTGRES_DB: trackmyspend
-        ports:
-          - 5432:5432
-        options: >-
-          --health-cmd "pg_isready -U jerem"
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
+    # services:
+    #   postgres:
+    #     image: postgres:16  # Version PostgreSQL
+    #     env:
+    #       POSTGRES_USER: jerem
+    #       POSTGRES_PASSWORD: admin
+    #       POSTGRES_DB: trackmyspend
+    #     ports:
+    #       - 5432:5432
+    #     options: >-
+    #       --health-cmd "pg_isready -U jerem"
+    #       --health-interval 10s
+    #       --health-timeout 5s
+    #       --health-retries 5
+    
 
     steps:
+      - name: Run Postgres
+        run: docker-compose up -d
+        
       - name: Checkout repository
         uses: actions/checkout@v4
 
@@ -41,18 +45,10 @@ jobs:
       - name: Vérifier la version de Java
         run: java -version
 
-      - name: Attendre que PostgreSQL soit prêt
-        run: |
-          until pg_isready -h postgres -U jerem; do
-            echo "Attente de la connexion à PostgreSQL..."
-            sleep 2
-          done
-        env:
-          PGPASSWORD: admin
-
       - name: Construire le projet avec Maven
         env:
-          SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/trackmyspend
+          POSTGRES_HOST: postgres
           SPRING_DATASOURCE_USERNAME: jerem
           SPRING_DATASOURCE_PASSWORD: admin
+          POSTGRES_PORT: 5432
         run: mvn clean package
