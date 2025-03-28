@@ -43,7 +43,7 @@ jobs:
 
       - name: Construire le projet avec Maven
         env:
-          SPRING_DATASOURCE_URL: jdbc:postgresql://localhost:5432/mydatabase
+          SPRING_DATASOURCE_URL: jdbc:postgresql://localhost:5432/trackmyspend
           SPRING_DATASOURCE_USERNAME: jerem
-          SPRING_DATASOURCE_PASSWORD: adminé"
+          SPRING_DATASOURCE_PASSWORD: admin
         run: mvn clean package
