@@ -54,7 +54,7 @@ jobs:
 
       - name: Attendre que PostgreSQL soit prêt
         run: |
-          until pg_isready -h postgres -U jerem; do
+          until pg_isready -h localhost -U jerem; do
             echo "PostgreSQL n'est pas encore prêt. Nouvelle tentative..."
             sleep 5
           done
