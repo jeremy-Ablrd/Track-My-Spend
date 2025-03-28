@@ -12,6 +12,22 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:16  # Version PostgreSQL
+        env:
+          POSTGRES_USER: jerem
+          POSTGRES_PASSWORD: admin
+          POSTGRES_DB: trackmyspend
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U jerem"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -26,4 +42,8 @@ jobs:
         run: java -version
 
       - name: Construire le projet avec Maven
+        env:
+          SPRING_DATASOURCE_URL: jdbc:postgresql://localhost:5432/mydatabase
+          SPRING_DATASOURCE_USERNAME: jerem
+          SPRING_DATASOURCE_PASSWORD: adminé"
         run: mvn clean package
