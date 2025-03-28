@@ -68,3 +68,7 @@ jobs:
           SPRING_DATASOURCE_PASSWORD: admin
           POSTGRES_PORT: 5432
         run: mvn clean package
+
+        # Lancer les tests avec Maven
+      - name: Lancer les tests unitaires avec Maven
+        run: mvn test
