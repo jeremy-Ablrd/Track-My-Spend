@@ -41,6 +41,15 @@ jobs:
       - name: Vérifier la version de Java
         run: java -version
 
+      - name: Attendre que PostgreSQL soit prêt
+        run: |
+          until pg_isready -h postgres -U jerem; do
+            echo "Attente de la connexion à PostgreSQL..."
+            sleep 2
+          done
+        env:
+          PGPASSWORD: admin
+
       - name: Construire le projet avec Maven
         env:
           SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/trackmyspend
