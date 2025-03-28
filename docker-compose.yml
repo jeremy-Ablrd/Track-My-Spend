@@ -25,7 +25,7 @@ services:
     container_name: trackmyspend-backend
     restart: always
     depends_on:
-      - db
+      - postgres
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/trackmyspend
       SPRING_DATASOURCE_USERNAME: jerem
