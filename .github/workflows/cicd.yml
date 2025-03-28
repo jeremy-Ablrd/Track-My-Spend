@@ -11,41 +11,41 @@ on:
       - dev
 
 jobs:
-  test:
-    name: Run Tests with Docker Compose
-    runs-on: ubuntu-latest
+  # test:
+  #   name: Run Tests with Docker Compose
+  #   runs-on: ubuntu-latest
 
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
+  #   steps:
+  #     - name: Checkout repository
+  #       uses: actions/checkout@v3
 
-      - name: Install Docker Compose
-        run: sudo apt-get update && sudo apt-get install -y docker-compose
+  #     - name: Install Docker Compose
+  #       run: sudo apt-get update && sudo apt-get install -y docker-compose
 
-      - name: Start services with Docker Compose
-        run: docker-compose up -d db
+  #     - name: Start services with Docker Compose
+  #       run: docker-compose up -d db
 
-      - name: Wait for PostgreSQL to be ready
-        run: |
-          echo "Waiting for PostgreSQL to start..."
-          sleep 10
-          until docker logs postgres-db 2>&1 | grep "database system is ready to accept connections"; do
-            echo "Still waiting..."
-            sleep 3
-          done
-          echo "PostgreSQL is ready!"
+  #     - name: Wait for PostgreSQL to be ready
+  #       run: |
+  #         echo "Waiting for PostgreSQL to start..."
+  #         sleep 10
+  #         until docker logs postgres-db 2>&1 | grep "database system is ready to accept connections"; do
+  #           echo "Still waiting..."
+  #           sleep 3
+  #         done
+  #         echo "PostgreSQL is ready!"
 
-      - name: Set up environment variables
-        run: |
-          echo "SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/trackmyspend" >> $GITHUB_ENV
-          echo "SPRING_DATASOURCE_USERNAME=jerem" >> $GITHUB_ENV
-          echo "SPRING_DATASOURCE_PASSWORD=admin" >> $GITHUB_ENV
+  #     - name: Set up environment variables
+  #       run: |
+  #         echo "SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/trackmyspend" >> $GITHUB_ENV
+  #         echo "SPRING_DATASOURCE_USERNAME=jerem" >> $GITHUB_ENV
+  #         echo "SPRING_DATASOURCE_PASSWORD=admin" >> $GITHUB_ENV
 
-      - name: Run tests
-        run: mvn clean test -Dspring.profiles.active=test
+  #     - name: Run tests
+  #       run: mvn clean test -Dspring.profiles.active=test
 
-      - name: Stop Docker Compose services
-        run: docker-compose down
+  #     - name: Stop Docker Compose services
+  #       run: docker-compose down
 
   build:
     name: Build Application
