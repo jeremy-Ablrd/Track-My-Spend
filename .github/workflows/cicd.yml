@@ -30,11 +30,13 @@ jobs:
     
 
     steps:
-      - name: Run Postgres
-        run: docker-compose up -d
-        
       - name: Checkout repository
         uses: actions/checkout@v4
+
+      - name: Install Docker Compose
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y docker-compose
 
       - name: Configurer JDK 17
         uses: actions/setup-java@v3
@@ -44,6 +46,20 @@ jobs:
 
       - name: Vérifier la version de Java
         run: java -version
+
+      # Démarrer les services via Docker Compose
+      - name: Démarrer PostgreSQL avec Docker Compose
+        run: |
+          docker-compose -f docker-compose.yml up -d
+
+      - name: Attendre que PostgreSQL soit prêt
+        run: |
+          until pg_isready -h localhost -U jerem; do
+            echo "PostgreSQL n'est pas encore prêt. Nouvelle tentative..."
+            sleep 5
+          done
+        env:
+          PGPASSWORD: admin
 
       - name: Construire le projet avec Maven
         env:

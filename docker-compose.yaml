@@ -13,6 +13,12 @@ services:
       - "5432:5432"
     volumes:
       - pg_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "jerem"]
+      interval: 10s
+      retries: 5
+      start_period: 10s
+      timeout: 5s
 
   app:
     build: .
